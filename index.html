@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic-Tac-Toe</title>
+  <link rel="icon" type="image/x-icon" href="favicon.jpg">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      background-color: rgb(0, 0, 0);
+      width: 100%;
+      height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .box {
+      width: 450px;
+      height: 450px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 2px;
+    }
+
+    .ditty-box {
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      border: 2px solid white;
+      font-size: 2em;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .mute {
+      width: 50px;
+      height: 30px;
+      position: relative;
+      top: 10px;
+      left: 1000px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="mute">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+        <g fill="#fff">
+          <polygon points="14.025,38.004 14.025,61.993 31.548,61.993 55.537,85.982 55.537,14.018 31.552,38.004">
+          </polygon>
+          <path
+            d="M67.41,34.095l-4.243,4.239c6.43,6.432,6.43,16.896,0,23.324L67.41,65.9C76.179,57.129,76.179,42.864,67.41,34.095z">
+          </path>
+          <path
+            d="M75.89,25.616l-4.241,4.239c11.105,11.105,11.105,29.176,0,40.284l4.241,4.241C89.337,60.934,89.337,39.06,75.89,25.616z">
+          </path>
+        </g>
+      </svg>
+    </div>
+    <div class="box" id="game-board">
+      <div class="ditty-box" id="one-ditty-box" style="border-top: none;border-left:none;"></div>
+      <div class="ditty-box" id="two-ditty-box" style="border-left:none;border-top: none;"></div>
+      <div class="ditty-box" id="three-ditty-box" style="border-top: none;border-right: none;"></div>
+      <div class="ditty-box" id="four-ditty-box" style="border-left:none; border-top: none;"></div>
+      <div class="ditty-box" id="five-ditty-box"></div>
+      <div class="ditty-box" id="six-ditty-box" style="border-top: none;border-right: none;"></div>
+      <div class="ditty-box" id="seven-ditty-box" style="border-left:none;border-bottom: none;"></div>
+      <div class="ditty-box" id="eight-ditty-box" style="border-bottom: none;"></div>
+      <div class="ditty-box" id="nine-ditty-box" style="border-top: none;border-right: none;border-bottom: none;"></div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const boxes = document.querySelectorAll('.ditty-box');
+        let currentPlayer = 'X';
+
+        boxes.forEach(box => {
+          box.addEventListener('click', function () {
+            if (box.innerText === '') {
+              box.innerText = currentPlayer;
+              currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
+
+              if (checkWinner()) {
+                alert(`Player ${currentPlayer === 'X' ? 'O' : 'X'} wins!`);
+                resetGame();
+              } else if (isDraw()) {
+                alert("It's a draw! No one wins.");
+                resetGame();
+              }
+            }
+          });
+        });
+
+        function checkWinner() {
+          const winPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+          ];
+
+          for (let pattern of winPatterns) {
+            const [a, b, c] = pattern;
+            if (boxes[a].innerText && boxes[a].innerText === boxes[b].innerText && boxes[a].innerText === boxes[c].innerText) {
+              return true;
+            }
+          }
+
+          return false;
+        }
+
+        function isDraw() {
+          return Array.from(boxes).every(box => box.innerText !== '');
+        }
+
+        function resetGame() {
+          boxes.forEach(box => {
+            box.innerText = '';
+          });
+          currentPlayer = 'X';
+        }
+      });
+    </script>
+</body>
+
+</html>
